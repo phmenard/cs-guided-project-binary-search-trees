@@ -3,37 +3,53 @@ class BSTNode:
         self.value = value
         self.left = None
         self.right = None
+        self.value.id = self.maxDepth()
 
 
     def insert(self, value):
         next_id = self.maxDepth()
-        value.id = next_id
-        if value.id <= self.value.id:
-            if self.left is None:
-                self.left = BSTNode(value)
-            else:
-                self.left.insert(value)
-
-        else:
+        #value.id = next_id
+        if next_id >= value.id:
             if self.right is None:
                 self.right = BSTNode(value)
             else:
                 self.right.insert(value)
 
-    def search(self, target):
+        else:
+            if self.left is None:
+                self.left = BSTNode(value)
+            else:
+                self.left.insert(value)
+
+    def search_by_id(self, target):
+        if target == self.value.id:
+            return self.value.bio
+        if target < self.value.id:
+            if self.left is None:
+                return False
+
+            return self.left.search_by_id(target)
+
+        else:
+            if self.right is None:
+                return False
+
+            return self.right.search_by_id(target)
+
+    def search_by_name(self, target):
         if target == self.value.name:
             return self.value.bio
         if target < self.value.name:
             if self.left is None:
                 return False
 
-            return self.left.search(target)
+            return self.left.search_by_name(target)
 
         else:
             if self.right is None:
                 return False
 
-            return self.right.search(target)
+            return self.right.search_by_name(target)
 
     def maxDepth(self):
         # Your code here
@@ -72,7 +88,7 @@ class BSTNode:
         return self
 
     def print_tree(self):
-        print(self.value.name)
+        print(f'Name {self.value.name}  {self.value.id}')
         
         if self.left is not None:
             self.left.print_tree()
@@ -100,22 +116,30 @@ class BSTNode:
 import random
 
 class User:
-    def __init__(self, name, bio):
-        self.id =  0
+    def __init__(self, name, bio, id):
+        self.id = id
         self.name = name
         self.bio = bio
 
-#user_id = 0
-user1 = User("paul", "I wish I was a fish")
+user_id = 0
+user1 = User("paul", "I wish I was a fish", user_id)
 root = BSTNode(user1)
 
-#ser_id = root.maxDepth()
-user2 = User("dave", "")
+user_id = root.maxDepth()
+user2 = User("dave", "Hello World !", user_id )
 root.insert(user2)
 
-#user_id = root.maxDepth()
-user3 = User("mike", "Love hurts")
+user_id = root.maxDepth()
+user3 = User("mike", "Love hurts", user_id)
 root.insert(user3)
+
+user_id = root.maxDepth()
+user4 = User("Tom", "Loves assembley", user_id)
+root.insert(user4)
+
+user_id = root.maxDepth()
+user4 = User("Dylan", "Loves cars", user_id)
+root.insert(user4)
 
 
 
@@ -125,7 +149,7 @@ root.insert(user3)
 #root.insert(13)
 #root.insert(14)
 
-print(root.search('paul'))
+print(root.search_by_id(3))
 #print(root.search(11))
 
 #root.print_tree_inter()
@@ -133,7 +157,7 @@ print(root.search('paul'))
 
 #root = root.delete(12)
 root.print_tree()
-root.print_tree_inter()
+#root.print_tree_inter()
 
 
 
